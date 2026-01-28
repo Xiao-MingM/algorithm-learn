@@ -8,7 +8,7 @@ public class Class68_Code05_MinimumDeleteBecomeSubstring {
 
     /**
      * 动态规划
-     * dp[i][j] s1串的前i位至少删掉多少位可以变成s2的后缀串
+     * dp[i][j] s1串的前i位至少删掉多少位可以变成s2的任意后缀串
      * s1[i-1]==s2[j-1] dp[i][j] = d[i - 1][j - 1] 否则 dp[i][j] = 1 + dp[i - 1][j]
      * @param str1
      * @param str2
