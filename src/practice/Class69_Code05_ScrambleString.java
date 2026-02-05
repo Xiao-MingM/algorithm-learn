@@ -91,4 +91,88 @@ public class Class69_Code05_ScrambleString {
 
         return false;
     }
+
+    public boolean isScramble3(String str1, String str2) {
+        int n = str1.length();
+        char[] s1 = str1.toCharArray();
+        char[] s2 = str2.toCharArray();
+        // 0 未被访问, 1 ture, -1 false
+        int[][][] dp = new int[n][n][n + 1];
+        return f3(s1, s2, 0, 0, n, dp);
+    }
+
+    /**
+     * 定义函数表示区间s1 l1-r1和 s2 l2-r2是否为扰乱字符串
+     * @param s1
+     * @param l1
+     * @param s2
+     * @param l2
+     * @param len
+     * @return
+     */
+    boolean f3(char[] s1, char[] s2, int l1,  int l2, int len, int[][][] dp) {
+        // 长度为1的时候判断是否相等
+        if (len == 1) {
+            return s1[l1] == s2[l2];
+        }
+        if (dp[l1][l2][len] != 0) {
+            return dp[l1][l2][len] == 1;
+        }
+        int ans = 0;
+        // l1, l2 -> k, l1 + k, l2 + k -> len -k
+        for (int k = 1; k < len; k++) {
+            if (f3(s1, s2, l1, l2, k, dp) && f3(s1, s2, l1 + k, l2 + k, len - k, dp)) {
+                ans = 1;
+            }
+        }
+        if (ans == 0) {
+            // 交叉，用for循环来解决边界问题
+            for (int i = l1 + 1, j = l2 + len - 1, k = 1; k < len; i++, j--, k++) {
+                if (f3(s1, s2, l1, j, k, dp) && f3(s1, s2, i, l2, len - k, dp)) {
+                    ans = 1;
+                    break;
+                }
+            }
+        }
+        dp[l1][l2][len] = ans == 1 ? 1 : -1;
+        return ans == 1;
+    }
+
+    // 动态规划版本
+    public boolean isScramble4(String str1, String str2) {
+        int n = str1.length();
+        char[] s1 = str1.toCharArray();
+        char[] s2 = str2.toCharArray();
+        boolean[][][] dp = new boolean[n][n][n + 1];
+        // 填第一层的格子
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dp[i][j][1] = s1[i] == s2[j];
+            }
+        }
+        for (int len = 2; len <= n; len++) {
+            for (int l1 = 0; l1 <= n - len; l1++) {
+                for (int l2 = 0; l2 <= n - len; l2++) {
+                    // l1, l2 -> k, l1 + k, l2 + k -> len -k
+                    for (int k = 1; k < len; k++) {
+                        if (dp[l1][l2][k] && dp[l1 + k][l2 + k][len - k]) {
+                            dp[l1][l2][len] = true;
+                            break;
+                        }
+                    }
+                    if (!dp[l1][l2][len]) {
+                        // 交叉，用for循环来解决边界问题
+                        for (int i = l1 + 1, j = l2 + len - 1, k = 1; k < len; i++, j--, k++) {
+                            if (dp[l1][j][k] && dp[i][l2][len - k]) {
+                                dp[l1][l2][len] = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[0][0][n];
+    }
 }
