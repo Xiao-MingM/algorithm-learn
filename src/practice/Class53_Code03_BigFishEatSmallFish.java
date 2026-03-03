@@ -52,4 +52,28 @@ public class Class53_Code03_BigFishEatSmallFish {
         }
         return ans;
     }
+
+
+    /**
+     * 单调栈：从右往左扫，栈中存「右侧的鱼」[体重, 被吃前需要的轮数]。
+     * 栈内保持小压大（栈底到栈顶体重递增）；当前鱼 nums[i] 为左侧，栈顶为右侧。
+     * 当 栈顶体重 < 当前体重 时弹栈：表示当前鱼吃掉栈顶鱼，当前轮数 = max(当前轮数+1, 栈顶轮数)。
+     * 答案 = 所有轮数的最大值。
+     */
+    public int totalSteps2(int[] nums) {
+        int n = nums.length;
+        int[][] stack = new int[n][2];
+        int r = 0;
+        int ans = 0;
+        for (int i = n - 1, curTurns; i >= 0; i--) {
+            curTurns = 0;
+            while (r > 0 && stack[r - 1][0] < nums[i]) {
+                curTurns = Math.max(curTurns + 1, stack[--r][1]);
+            }
+            stack[r][0] = nums[i];
+            stack[r++][1] = curTurns;
+            ans = Math.max(ans, curTurns);
+        }
+        return ans;
+    }
 }
