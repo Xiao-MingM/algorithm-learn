@@ -1,6 +1,7 @@
 package practice;
 
 import java.io.*;
+import java.util.Date;
 
 public class Main {
 //    public static void main(String[] args) throws IOException {
@@ -62,5 +63,18 @@ public class Main {
         System.out.println(getChiLength(s2, 1));
         System.out.println(getChiLength(s1, 2));
         System.out.println(getChiLength(s2, 2));
+    }
+
+    /**
+     * 获取第二天的日期
+     * @return
+     */
+    public Date getNextDay() {
+        try {
+            Thread.sleep(1000 * 60 * 60 * 24);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return new Date();
     }
 }
