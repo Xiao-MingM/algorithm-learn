@@ -18,64 +18,8 @@ import java.util.Arrays;
 // 提交以下的所有代码，并把主类名改成"Main"，可以直接通过
 public class Class73_Code02_BuyGoodsHaveDiscount {
 
-    // 输入：
-    //- 第一行包含两个数 n 和 X 。
-    //- 接下来 n 行包含每个游戏的信息，原价 ai,现价 bi，能获得的快乐值为 wi 。
-    //输出：
-    //- 输出一个数字，表示你能获得的最大快乐值。
-    // 输入：
-    //     4 100
-    //     100 73 60    27
-    //     100 89 35    11
-    //     30 21 30      9
-    //     10 8 10       2
-    // 输出：100
-    // 解释：买 1、3、4 三款游戏，获得总优惠 38 元，总金额 102 元超预算 2 元，满足条件，获得 100 快乐值。
-    // 提示：
-    //
-    // 所有输入均为整型数
-    // 1 <= n <= 500
-    // 0 <= x <= 10,000
-    // 0 <= b_i <= a_i <= 500
-    // 1 <= w_i <= 1,000,000,000
-    // 关于数据集：
-    // 前 30% 的数据， 小数据集 (n<=15)
-    // 中间 30% 的数据，中等数据集 (n<=100)
-    // 后 40% 的数据，大数据集 (n<=500)
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        StreamTokenizer st = new StreamTokenizer(in);
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-        while (st.nextToken() != StreamTokenizer.TT_EOF) {
-            n = (int)st.nval;
-            st.nextToken();
-            t = (int)st.nval;
-            for (int i = 1; i <= n; i++) {
-                st.nextToken();
-                origin[i] = (int)st.nval;
-                st.nextToken();
-                now[i] = (int)st.nval;
-                st.nextToken();
-                happy[i] = (long)st.nval;
-            }
-
-            long ans = compute();
-            out.println(ans);
-        }
-        out.flush();
-        out.close();
-        in.close();
-    }
-
-    static final int MAXT = 10000 + 500*500 + 1;
+    static final int MAXT = 100001;
     static final int MAXN = 501;
-    // 原价
-    static final int[] origin = new int[MAXN];
-    // 现价
-    static final int[] now = new int[MAXN];
-    // 快乐
-    static final long[] happy = new long[MAXN];
-
 
     // 需要进行背包筛选的数组
     static final int[] cost = new int[MAXN];
@@ -84,6 +28,51 @@ public class Class73_Code02_BuyGoodsHaveDiscount {
     static final long[] dp = new long[MAXT];
     // t,背包容量，n所有数据的量，len需要进行背包算法的数据长度
     static int t,n,len;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        StreamTokenizer st = new StreamTokenizer(in);
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+        while (st.nextToken() != StreamTokenizer.TT_EOF) {
+            n = (int)st.nval;
+            st.nextToken();
+            t = (int)st.nval;
+
+            int origin, now;
+            long happy, ans = 0;
+
+            for (int i = 1; i <= n; i++) {
+                st.nextToken();
+                origin = (int)st.nval;
+                st.nextToken();
+                now = (int)st.nval;
+                st.nextToken();
+                happy = (long)st.nval;
+
+                int well = origin - 2 * now;
+                // 必买
+                if (well >= 0) {
+                    // 直接加入答案快乐值
+                    ans += happy;
+                    // 拉高预算
+                    t += well;
+                } else {
+                    len++;
+                    // 交给背包决定要不要买
+                    cost[len] = -well;
+                    value[len] = happy;
+                }
+            }
+
+            ans += compute();
+            out.println(ans);
+        }
+        out.flush();
+        out.close();
+        in.close();
+    }
+
+
 
 
     /*
@@ -94,23 +83,6 @@ public class Class73_Code02_BuyGoodsHaveDiscount {
      * 即 sum(2bi - ai) <= X,背包容量 X 的情况下，怎么装可以收货最大价值
      */
     static long compute() {
-        long ans = 0;
-        len = 0;
-        for (int i = 1; i <= n; i++) {
-            int well = origin[i] - 2 * now[i];
-            // 必买
-            if (well >= 0) {
-                // 直接加入答案快乐值
-                ans += happy[i];
-                // 拉高预算
-                t += well;
-            } else {
-                len++;
-                // 交给背包决定要不要买
-                cost[len] = -well;
-                value[len] = happy[i];
-            }
-        }
         // 初始化DP
         Arrays.fill(dp, 0, t + 1, 0);
         for (int i = 1; i <= len; i++) {
@@ -118,8 +90,111 @@ public class Class73_Code02_BuyGoodsHaveDiscount {
                 dp[j] = Math.max(dp[j], dp[j - cost[i]] + value[i]);
             }
         }
-        return ans + dp[t];
+        return dp[t];
     }
+
+//    // 输入：
+//    //- 第一行包含两个数 n 和 X 。
+//    //- 接下来 n 行包含每个游戏的信息，原价 ai,现价 bi，能获得的快乐值为 wi 。
+//    //输出：
+//    //- 输出一个数字，表示你能获得的最大快乐值。
+//    // 输入：
+//    //     4 100
+//    //     100 73 60    27
+//    //     100 89 35    11
+//    //     30 21 30      9
+//    //     10 8 10       2
+//    // 输出：100
+//    // 解释：买 1、3、4 三款游戏，获得总优惠 38 元，总金额 102 元超预算 2 元，满足条件，获得 100 快乐值。
+//    // 提示：
+//    //
+//    // 所有输入均为整型数
+//    // 1 <= n <= 500
+//    // 0 <= x <= 10,000
+//    // 0 <= b_i <= a_i <= 500
+//    // 1 <= w_i <= 1,000,000,000
+//    // 关于数据集：
+//    // 前 30% 的数据， 小数据集 (n<=15)
+//    // 中间 30% 的数据，中等数据集 (n<=100)
+//    // 后 40% 的数据，大数据集 (n<=500)
+//    public static void main(String[] args) throws IOException {
+//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//        StreamTokenizer st = new StreamTokenizer(in);
+//        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+//        while (st.nextToken() != StreamTokenizer.TT_EOF) {
+//            n = (int)st.nval;
+//            st.nextToken();
+//            t = (int)st.nval;
+//            for (int i = 1; i <= n; i++) {
+//                st.nextToken();
+//                origin[i] = (int)st.nval;
+//                st.nextToken();
+//                now[i] = (int)st.nval;
+//                st.nextToken();
+//                happy[i] = (long)st.nval;
+//            }
+//
+//            long ans = compute();
+//            out.println(ans);
+//        }
+//        out.flush();
+//        out.close();
+//        in.close();
+//    }
+//
+//    static final int MAXT = 10000 + 500*500 + 1;
+//    static final int MAXN = 501;
+//    // 原价
+//    static final int[] origin = new int[MAXN];
+//    // 现价
+//    static final int[] now = new int[MAXN];
+//    // 快乐
+//    static final long[] happy = new long[MAXN];
+//
+//
+//    // 需要进行背包筛选的数组
+//    static final int[] cost = new int[MAXN];
+//    // 需要统计背包的价值
+//    static final long[] value = new long[MAXN];
+//    static final long[] dp = new long[MAXT];
+//    // t,背包容量，n所有数据的量，len需要进行背包算法的数据长度
+//    static int t,n,len;
+//
+//
+//    /*
+//     * 获得的总优惠金额不低于超过预算的总金额 ->  sum(ai - bi) >= sum(bi) - X  ->  sum(ai - 2bi) >= -X
+//     * 即
+//     * 如果ai-2bi >= 0 则这个游戏是必买的，它可以拉高游戏的预算 （ai-2bi >= 0， -X - (ai - 2bi) 会越来越大，直观感受就是游戏的优惠力度都大于它的现价了，买了肯定不亏）
+//     * 如果ai-2bi < 0 则这个游戏就要背包决策了，在这个决策范围内取最大快乐值
+//     * 即 sum(2bi - ai) <= X,背包容量 X 的情况下，怎么装可以收货最大价值
+//     */
+//    static long compute() {
+//        long ans = 0;
+//        len = 0;
+//        for (int i = 1; i <= n; i++) {
+//            int well = origin[i] - 2 * now[i];
+//            // 必买
+//            if (well >= 0) {
+//                // 直接加入答案快乐值
+//                ans += happy[i];
+//                // 拉高预算
+//                t += well;
+//            } else {
+//                len++;
+//                // 交给背包决定要不要买
+//                cost[len] = -well;
+//                value[len] = happy[i];
+//            }
+//        }
+//        // 初始化DP
+//        Arrays.fill(dp, 0, t + 1, 0);
+//        for (int i = 1; i <= len; i++) {
+//            for (int j = t; j >= cost[i]; j--) {
+//                dp[j] = Math.max(dp[j], dp[j - cost[i]] + value[i]);
+//            }
+//        }
+//        return ans + dp[t];
+//    }
 
 
 }
