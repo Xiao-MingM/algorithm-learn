@@ -25,7 +25,7 @@ public class Class62_Code01_AsFarFromLandAsPossible {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 1) {
-                    queue.offer(new int[]{i, j});
+                    queue.offer(i, j);
                 }
             }
         }
@@ -34,8 +34,9 @@ public class Class62_Code01_AsFarFromLandAsPossible {
             return -1;
         }
         // 定义初始层级
-        int level = 1;
+        int level = 0;
         while (!queue.isEmpty()) {
+            level++;
             int size = queue.size();
             // 依次出队列
             for (int i = 0; i < size; i++) {
@@ -46,13 +47,9 @@ public class Class62_Code01_AsFarFromLandAsPossible {
                     // 填要扩张的格子
                     if (x >= 0 && x < n && y >= 0 && y < n && grid[x][y] == 0) {
                         grid[x][y] = level + 1;
-                        queue.offer(new int[]{x, y});
+                        queue.offer(x, y);
                     }
                 }
-            }
-            // 只有扩张成功才计数
-            if (!queue.isEmpty()) {
-                level++;
             }
         }
         return level - 1;
@@ -76,11 +73,12 @@ public class Class62_Code01_AsFarFromLandAsPossible {
             return (rear + 1) % arr.length == front;
         }
 
-        public void offer(int[] data) {
+        public void offer(int x, int y) {
             if (isFull()) {
                 throw new RuntimeException("队列已满");
             }
-            arr[rear] = data;
+            arr[rear][0] = x;
+            arr[rear][1] = y;
             rear = (rear + 1) % arr.length;
         }
 
