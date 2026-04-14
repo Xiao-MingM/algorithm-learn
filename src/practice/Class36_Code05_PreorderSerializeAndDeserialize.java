@@ -13,18 +13,18 @@ public class Class36_Code05_PreorderSerializeAndDeserialize {
         // 先序序列化
         public String serialize(TreeNode root) {
             StringBuilder sb = new StringBuilder();
-            g(root, sb);
+            f(root, sb);
             return sb.toString();
         }
 
-        public void g(TreeNode root, StringBuilder sb) {
+        public void f(TreeNode root, StringBuilder sb) {
             // 不能return
             if (root == null) {
                 sb.append("#").append(",");
             } else {
                 sb.append(root.val).append(",");
-                g(root.left, sb);
-                g(root.right, sb);
+                f(root.left, sb);
+                f(root.right, sb);
             }
         }
 
