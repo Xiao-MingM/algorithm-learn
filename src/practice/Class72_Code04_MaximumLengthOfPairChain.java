@@ -25,7 +25,7 @@ public class Class72_Code04_MaximumLengthOfPairChain {
     //解释：最长的数对链是 [1,2] -> [4,5] -> [7,8] 。
     // [1,2] [2,4] [3,4] [5,7] [5,6]  [7,8] [8,9]
     // ends[2,4,7,8,9]
-    public int findLongestChain(int[][] pairs) {
+    public int findLongestChain1(int[][] pairs) {
         int n = pairs.length;
         // 只按头位置排序就可以
         Arrays.sort(pairs, Comparator.comparingInt(a -> a[0]));
@@ -52,6 +52,33 @@ public class Class72_Code04_MaximumLengthOfPairChain {
                 r = mid - 1;
             } else {
                 l = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    // 贪心解法
+    // [1,2] [2,4] [3,4] [5,7] [5,6] [7,8] [8,9]
+    // [1,2] [3,4] [2,5] [5,6] [4,7]
+    //  pre
+    //        pre
+    //                     pre
+    //                           pre
+    public int findLongestChain(int[][] pairs) {
+        int n = pairs.length;
+        if (n == 0) {
+            return 0;
+        }
+        // 只按头位置排序就可以
+        Arrays.sort(pairs, Comparator.comparingInt(a -> a[1]));
+        int ans = 1;
+        // 一个指针记录上面一个最小的
+        int[] pre = pairs[0];
+        for (int[] pair : pairs) {
+            // 可以接在后面直接接
+            if (pair[0] > pre[1]) {
+                ans++;
+                pre = pair;
             }
         }
         return ans;
