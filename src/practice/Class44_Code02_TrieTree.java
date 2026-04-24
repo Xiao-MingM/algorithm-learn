@@ -47,7 +47,7 @@ public class Class44_Code02_TrieTree {
                         out.println(count > 0 ? "YES" : "NO");
                         break;
                     case 4:
-                        int preCount = prefixAt(word);
+                        int preCount = prefixNumber(word);
                         out.println(preCount);
                         break;
                     default:
@@ -103,7 +103,7 @@ public class Class44_Code02_TrieTree {
         return end[cur];
     }
 
-    public static int prefixAt(String pre) {
+    public static int prefixNumber(String pre) {
         int cur = 1;
         for (int i = 0; i < pre.length(); i++) {
             int path = pre.charAt(i) - 'a';
