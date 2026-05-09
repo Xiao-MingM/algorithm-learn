@@ -2,6 +2,7 @@ package practice;
 
 import java.io.*;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
@@ -58,12 +59,23 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String s1 = "圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇好奇怪啊";
-        String s2 = "12324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738356789";
-        System.out.println(getChiLength(s1, 1));
-        System.out.println(getChiLength(s2, 1));
-        System.out.println(getChiLength(s1, 2));
-        System.out.println(getChiLength(s2, 2));
+//        String s1 = "圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇顶科技啊收到货卡萨科技大圣诞节汇好奇怪啊";
+//        String s2 = "12324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738312686312731212312324317863128378126312738356789";
+//        System.out.println(getChiLength(s1, 1));
+//        System.out.println(getChiLength(s2, 1));
+//        System.out.println(getChiLength(s1, 2));
+//        System.out.println(getChiLength(s2, 2));
+        String s = get450();
+        System.out.println(s);
+        System.out.println(s.length());
+    }
+
+    public static String get450() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 450; i++) {
+            sb.append("啊");
+        }
+        return sb.toString();
     }
 
     /**
