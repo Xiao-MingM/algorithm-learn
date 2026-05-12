@@ -65,9 +65,18 @@ public class Main {
 //        System.out.println(getChiLength(s2, 1));
 //        System.out.println(getChiLength(s1, 2));
 //        System.out.println(getChiLength(s2, 2));
-        String s = get450();
+//        String s = get450();
+//        System.out.println(s);
+//        System.out.println(s.length());
+        String name = "张三";
+        char[] chars = name.toCharArray();
+        for (char c : chars) {
+            System.out.println((int)c);
+        }
+        Integer d = null;
+        int data = d;
+        String s = String.valueOf(data);
         System.out.println(s);
-        System.out.println(s.length());
     }
 
     public static String get450() {
