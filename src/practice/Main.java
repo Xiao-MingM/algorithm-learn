@@ -68,15 +68,29 @@ public class Main {
 //        String s = get450();
 //        System.out.println(s);
 //        System.out.println(s.length());
-        String name = "张三";
-        char[] chars = name.toCharArray();
-        for (char c : chars) {
-            System.out.println((int)c);
+//        String name = "张三";
+//        char[] chars = name.toCharArray();
+//        for (char c : chars) {
+//            System.out.println((int)c);
+//        }
+//        Integer d = null;
+//        int data = d;
+//        String s = String.valueOf(data);
+//        System.out.println(s);
+
+        for (int i = 1; i <= 9 ; i++) {
+            System.out.println("alter table order_original_" + i + " modify remark varchar(450) DEFAULT '' COMMENT '备注';");
         }
-        Integer d = null;
-        int data = d;
-        String s = String.valueOf(data);
-        System.out.println(s);
+        for (int i = 10; i <= 19 ; i++) {
+            System.out.println("alter table order_original_" + i + " modify remark varchar(450) DEFAULT '' COMMENT '备注';");
+        }
+        for (int i = 20; i <= 29 ; i++) {
+            System.out.println("alter table order_original_" + i + " modify remark varchar(450) DEFAULT '' COMMENT '备注';");
+        }
+        for (int i = 30; i <= 32 ; i++) {
+            System.out.println("alter table order_original_" + i + " modify remark varchar(450) DEFAULT '' COMMENT '备注';");
+        }
+
     }
 
     public static String get450() {
