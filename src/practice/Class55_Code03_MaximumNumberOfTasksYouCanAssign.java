@@ -61,14 +61,14 @@ public class Class55_Code03_MaximumNumberOfTasksYouCanAssign {
             if (h < t && tasks[queue[h]] <= ability) {
                 h++;
             } else {
-                // 没活干或者干不了就得吃药了
+                // 没活干就得吃药了
                 int strengthen = ability + strength;
                 // 吃完药再去解锁新任务到队列
                 while (j < k && tasks[j] <= strengthen) {
                     queue[t++] = j++;
                 }
                 // 用吃完药的力量去干最有挑战的活儿，如果发现吃完药都没解锁能干的活直接失败了
-                if (h == t || tasks[queue[t - 1]] > strengthen) {
+                if (h == t) {
                     return false;
                 }
                 // 干掉困难任务
