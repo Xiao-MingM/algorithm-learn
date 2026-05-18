@@ -20,6 +20,38 @@ public class Class70_Code06_MaximumSubmatrix {
         int n = matrix[0].length;
         maxSum = Integer.MIN_VALUE;
         int[] nums = new int[n];
+        for (int up = 0; up < m; up++) {
+            Arrays.fill(nums, 0);
+            for (int down = up; down < m; down++) {
+                // 压一层数组去计算
+                for (int l = 0, r = 0, pre = Integer.MIN_VALUE; r < n; r++) {
+                    // 边压边算
+                    nums[r] += matrix[down][r];
+                    if (pre >= 0) {
+                        pre += nums[r];
+                    } else {
+                        pre = nums[r];
+                        l = r;
+                    }
+                    if (pre > maxSum) {
+                        l_x = l;
+                        r_x = r;
+                        l_y = up;
+                        r_y = down;
+                        maxSum = pre;
+                    }
+                }
+            }
+        }
+        // 收集答案
+        return new int[]{l_y, l_x, r_y, r_x};
+    }
+
+    public int[] getMaxMatrix1(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        maxSum = Integer.MIN_VALUE;
+        int[] nums = new int[n];
         for (int i = 0; i < m; i++) {
             Arrays.fill(nums, 0);
             for (int j = i; j < m; j++) {
