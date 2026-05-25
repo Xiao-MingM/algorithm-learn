@@ -22,49 +22,82 @@ public class Class45_Code01_CountConsistentKeys {
      * @return int整型一维数组
      */
     public int[] countConsistentKeys (int[][] b, int[][] a) {
-        // write code here
+        build();
+        StringBuilder sb = new StringBuilder();
+        for (int[] nums : a) {
+            for (int i = 1; i < nums.length; i++) {
+                sb.append(nums[i] - nums[i - 1]).append("#");
+            }
+            // 插入一条到前缀树
+            insert(sb.toString());
+            // 清空
+            sb.setLength(0);
+        }
+        int[] ans = new int[b.length];
+        for (int i = 0; i < b.length; i++) {
+            int[] nums = b[i];
+            for (int j = 1; j < nums.length; j++) {
+                sb.append(nums[j] - nums[j - 1]).append("#");
+            }
+            ans[i] = search(sb.toString());
+            sb.setLength(0);
+        }
+        return ans;
     }
 
     private static final int MAXN = 100005;
     // prefixTree[i][j]， i 表示 第几层 ，j 表示数字对应的第几条分叉，prefixTree[i][j]表示下一个节点所在的层数
-    private static final int[][] prefixTree = new int[MAXN][10];
-    private static final int[] pass = new int[MAXN];
-    private static final int[] ends = new int[MAXN];
+    private final int[][] prefixTree = new int[MAXN][12];
+    private final int[] pass = new int[MAXN];
 
-    private static int cnt;
+    private int cnt;
 
-    private static void build() {
+    private void build() {
         // 所有节点的根
         cnt = 1;
     }
 
-    private static void inert(int[] nums) {
-        int cur = 1;
-        pass[cur]++;
-        for (int num : nums) {
-            if (prefixTree[cur][num] == 0) {
-                prefixTree[cur][num] = ++cnt;
-            }
-            cur = cnt;
+    private int path(char c) {
+        if (c == '-') {
+            return 10;
+        } else if (c == '#') {
+            return 11;
+        } else {
+            return c - '0';
         }
     }
 
-    private static int query(int[] nums) {
+    private void insert(String word) {
         int cur = 1;
-        for (int num : nums) {
-            if (prefixTree[cur][num] == 0) {
+        pass[cur]++;
+        for (int i = 0, path; i < word.length(); i++) {
+            path = path(word.charAt(i));
+            if (prefixTree[cur][path] == 0) {
+                prefixTree[cur][path] = ++cnt;
+            }
+            cur = prefixTree[cur][path];
+            pass[cur]++;
+        }
+    }
+
+    private int search(String word) {
+        int cur = 1;
+        for (int i = 0, path; i < word.length(); i++) {
+            path = path(word.charAt(i));
+            if (prefixTree[cur][path] == 0) {
                 return 0;
             }
-            cur = prefixTree[cur][num];
+            cur = prefixTree[cur][path];
         }
         return pass[cur];
     }
 
-    private static void clear() {
+    private void clear() {
         for (int i = 1; i <= cnt; i++) {
             pass[i] = 0;
             Arrays.fill(prefixTree[i], 0);
         }
+        cnt = 1;
     }
 
 
