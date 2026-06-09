@@ -10,8 +10,7 @@ public class Class38_Code01_Subsequences {
 
     public String[] generatePermutation (String s) {
         Set<String> set = new HashSet<>();
-        char[] path = new char[s.length()];
-        f(s.toCharArray(), 0, path, 0, set);
+        f(s.toCharArray(), 0, new StringBuilder(), set);
         String[] ans = new String[set.size()];
         int i = 0;
         for (String str : set) {
@@ -20,18 +19,19 @@ public class Class38_Code01_Subsequences {
         return ans;
     }
 
-    void f(char[] s, int i, char[] path, int size, Set<String> set) {
-        // 到达边界结算答案
-        if (i == s.length) {
-            set.add(String.valueOf(path, 0, size));
-        } else {
-            // 当前节点加入路径中
-            path[size] = s[i];
-            // 当前节点加入路径跑
-            f(s, i + 1, path, size + 1, set);
-            // 当前节点不加入路径跑
-            f(s, i + 1, path, size, set);
+    private void f(char[] chars, int index, StringBuilder path, Set<String> set) {
+        if (index == chars.length) {
+            set.add(path.toString());
+            return;
         }
+
+        // 选择当前字符
+        path.append(chars[index]);
+        f(chars, index + 1, path, set);
+
+        // 撤销选择，走“不选择当前字符”的分支
+        path.deleteCharAt(path.length() - 1);
+        f(chars, index + 1, path, set);
     }
 
     /**
