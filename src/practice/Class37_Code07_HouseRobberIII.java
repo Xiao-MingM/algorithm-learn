@@ -6,39 +6,27 @@ import common.TreeNode;
 // 测试链接 : https://leetcode.cn/problems/house-robber-iii/
 public class Class37_Code07_HouseRobberIII {
     public int rob(TreeNode root) {
-        f(root);
-        return Math.max(yes, no);
+        int[] ans = f(root);
+        return Math.max(ans[0], ans[1]);
     }
 
-    int yes, no;
-    private void f(TreeNode root) {
+    // 返回值含义：
+    // ans[0]：偷当前节点时，当前子树能获得的最大收益
+    // ans[1]：不偷当前节点时，当前子树能获得的最大收益
+    private int[] f(TreeNode root) {
         if (root == null) {
-            yes = 0;
-            no = 0;
-        } else {
-            // 决定偷头结点
-            int y = root.val;
-            // 不偷头结点
-            int n = 0;
-
-            // 偷左边
-            f(root.left);
-            // 偷头结点只能不偷邻居
-            y += no;
-            // 不偷头结点可以选择偷或者不偷左孩子的方案
-            n += Math.max(yes, no);
-
-            // 偷右边
-            f(root.right);
-            // 偷头结点只能不偷邻居
-            y += no;
-            // 不偷头结点可以选择偷或者不偷左孩子的方案
-            n += Math.max(yes, no);
-
-            // 更新偷的结果到全局变量里去
-            yes = y;
-            no = n;
+            return new int[] { 0, 0 };
         }
+        int[] left = f(root.left);
+        int[] right = f(root.right);
+
+        // 偷当前节点：左右孩子都不能偷，只能拿左右子树“不偷头”的收益
+        int robRoot = root.val + left[1] + right[1];
+
+        // 不偷当前节点：左右孩子可偷可不偷，各自选收益更大的方案
+        int skipRoot = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+        return new int[] { robRoot, skipRoot };
     }
 
 }

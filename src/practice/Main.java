@@ -1,5 +1,7 @@
 package practice;
 
+import sun.misc.Cache;
+
 import java.io.*;
 import java.util.Date;
 import java.util.Random;
@@ -98,15 +100,25 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        Integer a = 1000;
-        Integer b = 1000;
-        Integer c = 127;
-        Integer d = 127;
-        System.out.println(a == b);
-        System.out.println(c == d);
-        Double d1 = 0.0;
-        double d2 = -0.0;
-        System.out.println(d1 == d2);
+//        Integer a = 1000;
+//        Integer b = 1000;
+//        Integer c = 127;
+//        Integer d = 127;
+//        System.out.println(a == b);
+//        System.out.println(c == d);
+//        Double d1 = 0.0;
+//        double d2 = -0.0;
+//        System.out.println(d1 == d2);
+//        float a = 2.0f - 1.9f;
+//        float b = 1.8f - 1.7f;
+//        System.out.printf("%.9f",a);// 0.100000024
+//        System.out.println(b);// 0.099999905
+//        System.out.println(a == b);// false
+
+
+        int i = Math.abs("91440604MA51034K4Q".hashCode() % 32) + 1;
+        System.out.println(i);
+
     }
 
     public static String get450() {
